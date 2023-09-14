@@ -5,7 +5,7 @@ Firmware 包括所有b站视频中提到的修改代码
 Hardware 重新设计的pcb所有文件
 3D model 42电机支撑架3d打印文件
 
-![alt text](https://gitee.com/switchpi/dummy/blob/master/images/top.jpg)
+![](images/top.jpg)
 
 --原理图基于并且拥有者稚晖君，原理图修改版和PCB设计木子晓文。--
 
