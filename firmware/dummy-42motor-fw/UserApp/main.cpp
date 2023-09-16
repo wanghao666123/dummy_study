@@ -25,13 +25,13 @@ void Main()
 //     Change below to fit your situation
     switch (serialNum)
     {
-        case 80824042270807: //J1
+        case 80824042270809: //J1
             defaultNodeID = 1;
             break;
         case 80742489862231: //J2
             defaultNodeID = 2;
             break;
-        case 384290670648: //J3
+        case 80824042270807: //J3
             defaultNodeID = 3;
             break;
         case 431531051064: //J4
