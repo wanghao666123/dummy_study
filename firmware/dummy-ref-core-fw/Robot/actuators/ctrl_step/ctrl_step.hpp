@@ -24,16 +24,16 @@ public:
     float angle = 0;
     float angleLimitMax;
     float angleLimitMin;
+    uint32_t temperature = 0.0;
     bool inverseDirection;
     uint8_t reduction;
     State state = STOP;
-    uint32_t motor_temperature;
 
     void SetAngle(float _angle);
     void SetAngleWithVelocityLimit(float _angle, float _vel);
     // CAN Command
     void SetEnable(bool _enable);
-    void SetEnableTemperature(bool _enable);
+    void SetEnableTemp(bool _enable);
     void DoCalibration();
     void SetCurrentSetPoint(float _val);
     void SetVelocitySetPoint(float _val);
@@ -51,8 +51,8 @@ public:
     void SetEnableOnBoot(bool _enable);
     void SetEnableStallProtect(bool _enable);
     void Reboot();
-    void EraseConfigs();
     uint32_t GetTemp();
+    void EraseConfigs();
 
     void UpdateAngle();
     void UpdateAngleCallback(float _pos, bool _isFinished);
@@ -64,10 +64,10 @@ public:
         return make_protocol_member_list(
             make_protocol_ro_property("angle", &angle),
             make_protocol_function("reboot", *this, &CtrlStepMotor::Reboot),
+            make_protocol_function("get_temperature", *this, &CtrlStepMotor::GetTemp),
+            make_protocol_function("set_enable_temperature", *this, &CtrlStepMotor::SetEnableTemp, "enable"),
             make_protocol_function("erase_configs", *this, &CtrlStepMotor::EraseConfigs),
             make_protocol_function("set_enable", *this, &CtrlStepMotor::SetEnable, "enable"),
-            make_protocol_function("set_enable_temperature", *this, &CtrlStepMotor::SetEnableTemperature, "enable"),
-            make_protocol_function("get_temperature", *this, &CtrlStepMotor::GetTemp),
             make_protocol_function("set_position_with_time", *this,
                                    &CtrlStepMotor::SetPositionWithVelocityLimit, "pos", "time"),
             make_protocol_function("set_position", *this, &CtrlStepMotor::SetPositionSetPoint, "pos"),

@@ -34,7 +34,7 @@ THE SOFTWARE.
 ===============================================
 */
 
-#include "MPU6050.hpp"
+#include "mpu6050.hpp"
 
 #define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
 

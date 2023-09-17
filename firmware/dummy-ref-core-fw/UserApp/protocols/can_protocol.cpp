@@ -29,7 +29,7 @@ void OnCanMessage(CAN_context* canCtx, CAN_RxHeaderTypeDef* rxHeader, uint8_t* d
                 dummy.motorJ[id]->UpdateAngleCallback(*(float*) (data), data[4]);
                 break;
             case 0x25:
-                dummy.motorJ[id]->motor_temperature = *(uint32_t *) (data);//not very safety cast, but fine as we are using same type
+                 memcpy(&dummy.motorJ[id]->temperature, data, sizeof(uint32_t));//(uint32_t) (data);
                 break;
             default:
                 break;

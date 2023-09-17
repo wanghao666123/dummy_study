@@ -22,7 +22,7 @@ void Main(void);
 
 extern uint64_t serialNumber;
 extern char serialNumberStr[13];
-
+//extern uint64_t myserial;
 
 #ifdef __cplusplus
 }

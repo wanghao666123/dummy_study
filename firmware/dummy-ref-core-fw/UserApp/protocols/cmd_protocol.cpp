@@ -3,18 +3,22 @@
 
 /*----------------- 1.Add Your Extern Variables Here (Optional) ------------------*/
 extern DummyRobot dummy;
-#define TEST_ADC_CHAN_0 0
+#define TEST_ADC_CHANNEL_0 0
 class HelperFunctions
 {
 public:
     /*--------------- 2.Add Your Helper Functions Helper Here (optional) ----------------*/
     float GetTemperatureHelper()
-    { return AdcGetChipTemperature(); }
+    {
+        return AdcGetChipTemperature();
+    }
 
+    /*just AN test for how to add a new CLI command through fibre protocol*/
     float GetVoltageHelper()
     {
-        return AdcGetVoltage(TEST_ADC_CHAN_0);
+        return AdcGetVoltage(TEST_ADC_CHANNEL_0);
     }
+
 
 } staticFunctions;
 

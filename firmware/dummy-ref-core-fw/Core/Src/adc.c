@@ -207,7 +207,7 @@ float AdcGetChipTemperature()
     return tempVal;
 }
 
-/*let's make this as an example*/
+
 float AdcGetVoltage(uint32_t _channel)
 {
     uint8_t index = 0;
@@ -228,8 +228,11 @@ float AdcGetVoltage(uint32_t _channel)
         default:
             index = 0;
     }
-//VDDA = VREFINT_CAL_VREF * *VREFINT_CAL_ADDR / vref / 1000
-    float val = VREFINT_CAL_VREF *  (float) (*(__IO uint16_t *) (VREFINT_CAL_ADDR) / (float) adc1ValBuf[ADC_CHANNEL_REF] / 1000);
+
+//    float val = (float) adc1ValBuf[ADC_CHANNEL_REF] / (float) (*(__IO uint16_t *) (VREFINT_CAL_ADDR))
+//                * (float) adc1ValBuf[index] / 4095
+//                * 3.3f;
+    float val = VREFINT_CAL_VREF * (float) (*(__IO uint16_t *) (VREFINT_CAL_ADDR)) / (float) adc1ValBuf[ADC_CHANNEL_REF]/1000;
 //                * (float) adc1ValBuf[index] / 4095
 //                * 3.3f;
 

@@ -21,7 +21,7 @@ DummyRobot::DummyRobot(CAN_HandleTypeDef* _hcan) :
     hcan(_hcan)
 {
     motorJ[ALL] = new CtrlStepMotor(_hcan, 0, false, 1, -180, 180);
-    motorJ[1] = new CtrlStepMotor(_hcan, 1, true, 50, -170, 170);
+    motorJ[1] = new CtrlStepMotor(_hcan, 1, true, 30, -170, 170);
     motorJ[2] = new CtrlStepMotor(_hcan, 2, false, 30, -73, 90);
     motorJ[3] = new CtrlStepMotor(_hcan, 3, true, 30, 35, 180);
     motorJ[4] = new CtrlStepMotor(_hcan, 4, false, 24, -180, 180);
@@ -413,13 +413,17 @@ uint32_t DummyRobot::CommandHandler::ParseCommand(const std::string &_cmd)
     {
         case COMMAND_TARGET_POINT_SEQUENTIAL:
         case COMMAND_CONTINUES_TRAJECTORY:
-            if (_cmd[0] == '>')
+            if (_cmd[0] == '>' || _cmd[0] == '&')
             {
                 float joints[6];
                 float speed;
 
-                argNum = sscanf(_cmd.c_str(), ">%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
-                                joints + 3, joints + 4, joints + 5, &speed);
+                if (_cmd[0] == '>')
+                    argNum = sscanf(_cmd.c_str(), ">%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
+                                    joints + 3, joints + 4, joints + 5, &speed);
+                if (_cmd[0] == '&')
+                    argNum = sscanf(_cmd.c_str(), "&%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
+                                    joints + 3, joints + 4, joints + 5, &speed);
                 if (argNum == 6)
                 {
                     context->MoveJ(joints[0], joints[1], joints[2],
@@ -452,11 +456,6 @@ uint32_t DummyRobot::CommandHandler::ParseCommand(const std::string &_cmd)
                     context->SetJointSpeed(speed);
                     context->MoveL(pose[0], pose[1], pose[2], pose[3], pose[4], pose[5]);
                 }
-                // Trigger a transmission immediately, in case IsMoving() returns false
-                context->MoveJoints(context->targetJoints);
-
-                while (context->IsMoving())
-                    osDelay(5);
                 Respond(*usbStreamOutputPtr, "ok");
                 Respond(*uart4StreamOutputPtr, "ok");
             }
@@ -464,13 +463,17 @@ uint32_t DummyRobot::CommandHandler::ParseCommand(const std::string &_cmd)
             break;
 
         case COMMAND_TARGET_POINT_INTERRUPTABLE:
-            if (_cmd[0] == '>')
+            if (_cmd[0] == '>' || _cmd[0] == '&')
             {
                 float joints[6];
                 float speed;
 
-                argNum = sscanf(_cmd.c_str(), ">%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
-                                joints + 3, joints + 4, joints + 5, &speed);
+                if (_cmd[0] == '>')
+                    argNum = sscanf(_cmd.c_str(), ">%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
+                                    joints + 3, joints + 4, joints + 5, &speed);
+                if (_cmd[0] == '&')
+                    argNum = sscanf(_cmd.c_str(), "&%f,%f,%f,%f,%f,%f,%f", joints, joints + 1, joints + 2,
+                                    joints + 3, joints + 4, joints + 5, &speed);
                 if (argNum == 6)
                 {
                     context->MoveJ(joints[0], joints[1], joints[2],
