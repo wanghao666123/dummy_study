@@ -2,7 +2,9 @@
 无刷电机版的Dummy2。
 
 Firmware BLDC无刷电机固件
+
 Hardware BLDC无刷电机原理图和pcb
+
 3D model Tarot 4108 BLDC无刷电机支撑架3d打印文件
 
 ![](../images/bldc.jpg)
