@@ -15,8 +15,13 @@ Based on ZhiHuiJun and SimpleFOC schematic. Schematic and PCB designed by Muzi X
 The schematic and PCB design are free and open, and comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
 
 References
+
 https://github.com/simplefoc/Arduino-SimpleFOCShield/tree/master
+
 https://github.com/peng-zhihui/HelloWord-Keyboard
+
 https://docs.simplefoc.com/cheetsheet/options_reference
+
 https://www.odriverobotics.com
+
 https://docs.odriverobotics.com/v/0.5.5/control.html
