@@ -2,3 +2,4 @@
 - File name is included 'metal' which means it is a CNC part
 - You have to take your own risk to practice these models
 - Send your feedback is always welcome!
+- J6末端对精度要求报告，正在考虑用个成本更低的28行星减速器，
