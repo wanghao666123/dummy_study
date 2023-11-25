@@ -1,16 +1,17 @@
 # Dummy
 稚晖君dummy复制，目标是全国产谐波减速器，价格在3000元之内！
-(控制板，42/35闭环驱动板已有成品，可以到我的b站工房购买了！)
+1. 控制板，42/35闭环驱动板已有成品，可以到我的b站工房购买了！
 - [控制板购买链接](https://gf.bilibili.com/item/detail/1104338058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
 - [42闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104336058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
 - [35闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104337058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
 
+1. 目录描述
 - Firmware 包括ref控制板，42，35驱动板所用源代码
 - Hardware 重新设计包括ref控制板，42，35驱动板schematic, pcb所有文件
 - 3d-model 所有复制dummy 3d打印文件
 - ESP32-iot esp32 supports files
 
-- 重新设计的ref控制板
+1. 重新设计的ref控制板
 ![](images/controller_top.jpg)
 ![](images/controller_bot.jpg)
 - 简化设计，更适合量产
@@ -21,7 +22,7 @@
 1. 更合理的布局
 1. 降低量产成本
 
-- 重新设计的42/35驱动板
+1. 重新设计的42/35驱动板
 ![](images/m42.jpg)
 ![](images/m35.jpg)
 - 42/35驱动板正式版
