@@ -1,5 +1,9 @@
 # Dummy
 稚晖君dummy复制，目标是全国产谐波减速器，价格在3000元之内！
+(控制板，42/35闭环驱动板已有成品，可以到我的b站工房购买了！)
+- [控制板购买链接](https://gf.bilibili.com/item/detail/1104338058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
+- [42闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104336058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
+- [35闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104337058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
 
 - Firmware 包括ref控制板，42，35驱动板所用源代码
 - Hardware 重新设计包括ref控制板，42，35驱动板schematic, pcb所有文件
