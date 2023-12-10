@@ -11,6 +11,7 @@ public:
     = default;
 
     void Tick(uint32_t _timeElapseMillis, Motor::State_t _state);
+    void Status(uint8_t id, bool on);
 
 private:
     uint32_t timer = 0;

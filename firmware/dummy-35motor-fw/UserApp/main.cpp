@@ -42,7 +42,7 @@ void Main()
             .velocityLimit = 30 * motor.MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS, // r/s
             .velocityAcc = 100 * motor.MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS,   // r/s^2
             .calibrationCurrent=2000,
-            .dce_kp = 200,
+            .dce_kp = 195,
             .dce_kv = 80,
             .dce_ki = 300,
             .dce_kd = 250,

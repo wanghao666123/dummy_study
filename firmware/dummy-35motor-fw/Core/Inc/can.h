@@ -34,6 +34,7 @@ extern CAN_RxHeaderTypeDef RxHeader;
 extern uint8_t TxData[8];
 extern uint8_t RxData[8];
 extern uint32_t TxMailbox;
+extern float motor_temperature;
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan;

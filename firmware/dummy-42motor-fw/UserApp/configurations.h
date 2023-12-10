@@ -30,10 +30,10 @@ typedef struct Config_t
     int32_t dce_kv;
     int32_t dce_ki;
     int32_t dce_kd;
-    uint32_t motor_temperature;
+    float motor_temperature;
     bool enableMotorOnBoot;
     bool enableStallProtect;
-    bool enableMOtorTemperature;
+    bool enableTempWatch;
 } BoardConfig_t;
 
 extern BoardConfig_t boardConfig;

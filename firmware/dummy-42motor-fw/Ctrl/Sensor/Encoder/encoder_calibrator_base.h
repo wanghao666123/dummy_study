@@ -52,6 +52,8 @@ public:
 
     void Tick20kHz();
     void TickMainLoop();
+    void TestFlash();
+    int32_t FlashRun();
 
 
 private:
@@ -61,6 +63,7 @@ private:
     State_t state;
     uint32_t goPosition;
     bool goDirection;
+    bool stopFlash = 0;
     uint16_t sampleCount = 0;
     uint16_t sampleDataRaw[SAMPLE_COUNTS_PER_STEP]{};
     uint16_t sampleDataAverageForward[MOTOR_ONE_CIRCLE_HARD_STEPS + 1]{};

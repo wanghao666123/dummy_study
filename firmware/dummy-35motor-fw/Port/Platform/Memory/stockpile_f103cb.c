@@ -31,21 +31,39 @@ Stockpile_FLASH_Typedef stockpile_data					= {STOCKPILE_APP_DATA_ADDR,			STOCKPI
 **/
 void Stockpile_Flash_Data_Empty(Stockpile_FLASH_Typedef *stockpile)
 {
-	uint32_t count;
-	HAL_FLASH_Unlock();	//LL_FLASH_Unlock();
-	for(count = 0; count < stockpile->page_num; count++)
-	{
-		FLASH_EraseInitTypeDef erase_config;
-		uint32_t page_error;
-		erase_config.TypeErase   = FLASH_TYPEERASE_PAGES;																	//页擦除		
-		erase_config.PageAddress = stockpile->begin_add + (count * Stockpile_Page_Size);	//页起始地址
-		erase_config.NbPages     = 1;																											//擦除页数量
-		HAL_FLASHEx_Erase(&erase_config, &page_error);
-		FLASH_WaitForLastOperation(HAL_MAX_DELAY);
-		CLEAR_BIT(FLASH->CR, FLASH_CR_PER);
-	}
-	HAL_FLASH_Lock();	//LL_FLASH_Lock();
+    uint32_t count;
+    HAL_FLASH_Unlock();	//LL_FLASH_Unlock();
+    for(count = 0; count < stockpile->page_num; count++)
+    {
+        FLASH_EraseInitTypeDef erase_config;
+        uint32_t page_error;
+        erase_config.TypeErase   = FLASH_TYPEERASE_PAGES;																	//页擦除
+        erase_config.PageAddress = stockpile->begin_add + (count * Stockpile_Page_Size);	//页起始地址
+        erase_config.NbPages     = 1;																											//擦除页数量
+        HAL_FLASHEx_Erase(&erase_config, &page_error);
+        FLASH_WaitForLastOperation(HAL_MAX_DELAY);
+        CLEAR_BIT(FLASH->CR, FLASH_CR_PER);
+    }
+    HAL_FLASH_Lock();	//LL_FLASH_Lock();
 }
+
+
+//#define FLASH_PAGE_SIZE 0x400 // 1024 bytes
+//void Stockpile_Flash_Data_Empty(Stockpile_FLASH_Typedef *stockpile){
+////void erase_pages(uint32_t page_address, uint32_t num_pages) {
+//
+//    FLASH_EraseInitTypeDef erase_config;
+//
+//    erase_config.TypeErase = FLASH_TYPEERASE_PAGES;
+//    erase_config.PageAddress =stockpile->begin_add;// page_address;
+//    erase_config.NbPages = stockpile->page_num;
+//
+//    uint32_t page_error;
+//
+//    HAL_FLASH_Unlock();
+//    HAL_FLASHEx_Erase(&erase_config, &page_error);
+//    HAL_FLASH_Lock();
+//}
 
 /**
   * @brief  Flash数据开始写入

@@ -40,8 +40,10 @@ extern ADC_HandleTypeDef hadc1;
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+float AdcGetChipTemperature();
+
 extern uint16_t whole_adc_data[2][12];
-float ADC_Get_Temp();
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

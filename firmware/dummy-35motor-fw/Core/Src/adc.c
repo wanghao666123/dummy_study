@@ -23,7 +23,7 @@
 
 /* USER CODE BEGIN 0 */
 uint16_t whole_adc_data[2][12];
-
+float motor_temperature;
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -150,54 +150,38 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   }
 }
 
-/* USER CODE BEGIN 1 */
-/* Here we have a few constants that make editing the code easier. I will go
-   through them one by one.
-
-/* In order to use the Beta equation, we must know our other resistor
-   within our resistor divider. If you are using something with large tolerance,
-   like at 5% or even 1%, measure it and place your result here in ohms. */
+#define TEMP_GROUP 0
+#define TEMP_TEMP_DATA 1
 const float BALANCE_RESISTOR   = 3300.0;
-
 // This helps calculate the thermistor's resistance (check article for details).
-const float MAX_ADC            = 4095.0;//our adc is 12bits
-
+const float MAX_ADC            = 4095.0;
 /* This is thermistor dependent and it should be in the datasheet, or refer to the
    article for how to calculate it using the Beta equation.
    I had to do this, but I would try to get a thermistor with a known
    beta if you want to avoid empirical calculations. */
 const float BETA               = 3455.0;
-
 /* This is also needed for the conversion equation as "typical" room temperature
    is needed as an input. */
 const float ROOM_TEMP          = 298.15;   // room temperature in Kelvin
-
 /* Thermistors will have a typical resistance at room temperature so write this
    down here. Again, needed for conversion equations. */
 const float RESISTOR_ROOM_TEMP = 10000.0;
-#define TEMP_ADC_GROUP 0
-#define TEMP_ADC_DATA 1
-float ADC_Get_Temp()
+/* USER CODE BEGIN 1 */
+
+float AdcGetChipTemperature()
 {
-    float adc_val = 0.0;
-    double rThermistor = 0;            // Holds thermistor resistance value
-    double tKelvin     = 0;            // Holds calculated temperature
-    double tCelsius    = 0;            // Hold temperature in celsius
+    float rThermistor = 0;            // Holds thermistor resistance value
+    float tKelvin     = 0;            // Holds calculated temperature
+    float tempVal = 0;
+    float adcVal = (float) whole_adc_data[TEMP_GROUP][TEMP_TEMP_DATA];
 
-    adc_val = (float ) whole_adc_data[TEMP_ADC_GROUP][TEMP_ADC_DATA];
-
-    rThermistor = BALANCE_RESISTOR * ( (MAX_ADC / adc_val) - 1);
-
+    rThermistor = BALANCE_RESISTOR * ( (MAX_ADC / adcVal) - 1);
     tKelvin = (BETA * ROOM_TEMP) /
               (BETA + (ROOM_TEMP * log(rThermistor / RESISTOR_ROOM_TEMP)));
-    /* I will use the units of Celsius to indicate temperature. I did this
-       just so I can see the typical room temperature, which is 25 degrees
-       Celsius, when I first try the program out. I prefer Fahrenheit, but
-       I leave it up to you to either change this function, or create
-       another function which converts between the two units. */
-    tCelsius = tKelvin - 273.15;  // convert kelvin to celsius
 
-    return tCelsius;    // Return the temperature in Celsius
+    tempVal = tKelvin - 273.15;  // convert kelvin to celsius
+
+    return tempVal;
 }
 
 /* USER CODE END 1 */

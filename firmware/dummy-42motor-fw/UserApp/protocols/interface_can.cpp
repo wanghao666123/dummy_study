@@ -55,6 +55,7 @@ void OnCanCmd(uint8_t _cmd, uint8_t* _data, uint32_t _len)
             }
             motor.controller->SetPositionSetPoint(
                 (int32_t) (*(float*) RxData * (float) motor.MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS));
+            printf("SET MOTOR[0x05] POSITION[]\r\n");
             if (_data[4]) // Need Position & Finished ACK
             {
                 tmpF = motor.controller->GetPosition();
@@ -213,6 +214,7 @@ void OnCanCmd(uint8_t _cmd, uint8_t* _data, uint32_t _len)
             _data[4] = motor.controller->state == Motor::STATE_FINISH ? 1 : 0;
             txHeader.StdId = (boardConfig.canNodeId << 7) | 0x23;
             CAN_Send(&txHeader, _data);
+//            printf("CAN SEND BACK to NODE[%d]\n", boardConfig.canNodeId );
         }
             break;
         case 0x24: // Get Offset
@@ -226,21 +228,23 @@ void OnCanCmd(uint8_t _cmd, uint8_t* _data, uint32_t _len)
         }
             break;
 
-        case 0x25: // Get command and send this motor temperature data back to REF
+        case 0x25: // Get temperature
         {
             auto* b = (unsigned char*) &boardConfig.motor_temperature;
             for (int i = 0; i < 4; i++)
                 _data[i] = *(b + i);
+            _data[4] = 0;
+            _data[5] = 0;
+            _data[6] = 0;
+            _data[7] = 0;
             txHeader.StdId = (boardConfig.canNodeId << 7) | 0x25;
-
             CAN_Send(&txHeader, _data);
         }
             break;
 
-        case 0x7d:  // Erase Configs
-            boardConfig.enableMOtorTemperature = true;
+        case 0x7d:  // enable motor temperature watch
+            boardConfig.enableTempWatch = true;
             break;
-
         case 0x7e:  // Erase Configs
             boardConfig.configStatus = CONFIG_RESTORE;
             break;

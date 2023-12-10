@@ -14,7 +14,6 @@ public:
     explicit MT6816() : MT6816Base((uint16_t*) (0x08017C00))
     {}
 
-
 private:
     void SpiInit() override;
 

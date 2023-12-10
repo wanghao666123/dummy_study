@@ -1,5 +1,10 @@
 #include "led_base.h"
 
+void LedBase::Status(uint8_t id, bool on)
+{
+    SetLedState(id, on);
+}
+
 void LedBase::Tick(uint32_t _timeElapseMillis, Motor::State_t _state)
 {
     timer += _timeElapseMillis;

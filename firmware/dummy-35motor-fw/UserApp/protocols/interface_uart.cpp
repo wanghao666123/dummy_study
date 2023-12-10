@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 extern Motor motor;
 
 void OnUartCmd(uint8_t* _data, uint16_t _len)
@@ -44,5 +43,4 @@ void OnUartCmd(uint8_t* _data, uint16_t _len)
             break;
     }
 }
-
 

@@ -1,6 +1,8 @@
 #include <Platform/Memory/stockpile_f103cb.h>
 #include <valarray>
 #include "encoder_calibrator_base.h"
+#include "common_inc.h"
+
 
 int32_t EncoderCalibratorBase::CycleDataAverage(const uint16_t* _data, uint16_t _length, int32_t _cyc)
 {
@@ -230,6 +232,26 @@ void EncoderCalibratorBase::Tick20kHz()
     }
 }
 
+int32_t EncoderCalibratorBase::FlashRun() {
+    if (stopFlash) return 0;
+    else return 1;
+}
+
+void EncoderCalibratorBase::TestFlash() {
+//    if (state != CALI_CALCULATING)
+//        return;
+    printf("start test clear flash\r\n");
+    int i;
+//    motor->driver->Sleep();
+
+    ClearFlash();
+    BeginWriteFlash();
+    for (i = 0; i < 16384; i++){
+        WriteFlash16bitsAppend(0x6666);
+    }
+    EndWriteFlash();
+    printf("start clear flash done\r\n");
+}
 
 void EncoderCalibratorBase::TickMainLoop()
 {
@@ -256,9 +278,9 @@ void EncoderCalibratorBase::TickMainLoop()
             for (stepX = rcdX; stepX < rcdX + motor->MOTOR_ONE_CIRCLE_HARD_STEPS + 1; stepX++)
             {
                 dataI32 = CycleSubtract(
-                    sampleDataAverageForward[CycleMod(stepX + 1, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
-                    sampleDataAverageForward[CycleMod(stepX, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
-                    motor->encoder->RESOLUTION);
+                        sampleDataAverageForward[CycleMod(stepX + 1, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
+                        sampleDataAverageForward[CycleMod(stepX, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
+                        motor->encoder->RESOLUTION);
                 if (stepX == rcdX)
                 {
                     for (stepY = rcdY; stepY < dataI32; stepY++)
@@ -296,17 +318,17 @@ void EncoderCalibratorBase::TickMainLoop()
             for (stepX = rcdX + motor->MOTOR_ONE_CIRCLE_HARD_STEPS; stepX > rcdX - 1; stepX--)
             {
                 dataI32 = CycleSubtract(
-                    sampleDataAverageForward[CycleMod(stepX, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
-                    sampleDataAverageForward[CycleMod(stepX + 1, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
-                    motor->encoder->RESOLUTION);
+                        sampleDataAverageForward[CycleMod(stepX, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
+                        sampleDataAverageForward[CycleMod(stepX + 1, motor->MOTOR_ONE_CIRCLE_HARD_STEPS)],
+                        motor->encoder->RESOLUTION);
                 if (stepX == rcdX + motor->MOTOR_ONE_CIRCLE_HARD_STEPS)
                 {
                     for (stepY = rcdY; stepY < dataI32; stepY++)
                     {
                         dataU16 = CycleMod(
-                            motor->SOFT_DIVIDE_NUM * (stepX + 1) -
-                            motor->SOFT_DIVIDE_NUM * stepY / dataI32,
-                            motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
+                                motor->SOFT_DIVIDE_NUM * (stepX + 1) -
+                                motor->SOFT_DIVIDE_NUM * stepY / dataI32,
+                                motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
                         WriteFlash16bitsAppend(dataU16);
                         resultNum++;
                     }
@@ -315,9 +337,9 @@ void EncoderCalibratorBase::TickMainLoop()
                     for (stepY = 0; stepY < rcdY; stepY++)
                     {
                         dataU16 = CycleMod(
-                            motor->SOFT_DIVIDE_NUM * (stepX + 1) -
-                            motor->SOFT_DIVIDE_NUM * stepY / dataI32,
-                            motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
+                                motor->SOFT_DIVIDE_NUM * (stepX + 1) -
+                                motor->SOFT_DIVIDE_NUM * stepY / dataI32,
+                                motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
                         WriteFlash16bitsAppend(dataU16);
                         resultNum++;
                     }
@@ -326,9 +348,9 @@ void EncoderCalibratorBase::TickMainLoop()
                     for (stepY = 0; stepY < dataI32; stepY++)
                     {
                         dataU16 = CycleMod(
-                            motor->SOFT_DIVIDE_NUM * (stepX + 1) -
-                            motor->SOFT_DIVIDE_NUM * stepY / dataI32,
-                            motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
+                                motor->SOFT_DIVIDE_NUM * (stepX + 1) -
+                                motor->SOFT_DIVIDE_NUM * stepY / dataI32,
+                                motor->MOTOR_ONE_CIRCLE_SUBDIVIDE_STEPS);
                         WriteFlash16bitsAppend(dataU16);
                         resultNum++;
                     }
