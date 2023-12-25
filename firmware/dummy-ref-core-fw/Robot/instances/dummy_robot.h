@@ -133,6 +133,10 @@ public:
     void UpdateJointPose6D();
     void Reboot();
     void SetEnable(bool _enable);
+    void SetRGBEnable(bool _enable);
+    bool GetRGBEnabled();
+    void SetRGBMode(uint32_t mode);
+    uint32_t GetRGBMode();
     void CalibrateHomeOffset();
     void Homing();
     void Resting();
@@ -158,6 +162,8 @@ public:
             make_protocol_object("hand", hand->MakeProtocolDefinitions()),
             make_protocol_function("reboot", *this, &DummyRobot::Reboot),
             make_protocol_function("set_enable", *this, &DummyRobot::SetEnable, "enable"),
+            make_protocol_function("set_rgb_enable", *this, &DummyRobot::SetRGBEnable, "enable"),
+            make_protocol_function("set_rgb_mode", *this, &DummyRobot::SetRGBMode, "mode"),
             make_protocol_function("move_j", *this, &DummyRobot::MoveJ, "j1", "j2", "j3", "j4", "j5", "j6"),
             make_protocol_function("move_l", *this, &DummyRobot::MoveL, "x", "y", "z", "a", "b", "c"),
             make_protocol_function("set_joint_speed", *this, &DummyRobot::SetJointSpeed, "speed"),
@@ -199,6 +205,8 @@ private:
     DOF6Kinematic::Joint6D_t dynamicJointSpeeds = {1, 1, 1, 1, 1, 1};
     DOF6Kinematic* dof6Solver;
     bool isEnabled = false;
+    bool isRGBEnabled = false;
+    uint32_t rgbMode = 0;
 };
 
 

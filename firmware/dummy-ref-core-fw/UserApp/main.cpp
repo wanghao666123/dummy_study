@@ -9,6 +9,8 @@ MPU6050 mpu6050(&hi2c1);
 Timer timerCtrlLoop(&htim7, 200);
 // 2x2-channel PWMs, used htim9 & htim12, each has 2-channel outputs
 PWM pwm(21000, 21000);
+
+RGB rgb(0);
 // Robot instance
 DummyRobot dummy(&hcan1);
 
@@ -127,6 +129,29 @@ void OnTimer7Callback()
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
+osThreadId_t rgbTaskHandle;
+void ThreadRGBUpdate(void* argument) {
+    for (;;) {
+        if (dummy.GetRGBEnabled())
+        {
+            rgb.Run((RGB::Rgb_style_t)dummy.GetRGBMode());
+            osDelay(30);
+        }else
+        {
+            rgb.Run(RGB::ALLOff);
+            osDelay(30);
+        }
+    }
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+    if(htim->Instance==TIM2)
+    {
+        HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_4);
+        rgb.Interrupt(1);
+    }
+}
 
 /* Default Entry -------------------------------------------------------*/
 void Main(void)
@@ -172,6 +197,13 @@ void Main(void)
         .priority = (osPriority_t) osPriorityNormal,   // should >= Normal
     };
     oledTaskHandle = osThreadNew(ThreadOledUpdate, nullptr, &oledTask_attributes);
+
+    const osThreadAttr_t rgbTask_attributes = {
+            .name = "RGBTask",
+            .stack_size = 2000,
+            .priority = (osPriority_t) osPriorityNormal,   // should >= Normal
+    };
+    rgbTaskHandle = osThreadNew(ThreadRGBUpdate, nullptr, &rgbTask_attributes);
 
     // Start Timer Callbacks.
     timerCtrlLoop.SetCallback(OnTimer7Callback);

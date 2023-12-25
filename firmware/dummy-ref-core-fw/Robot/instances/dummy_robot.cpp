@@ -57,7 +57,6 @@ void DummyRobot::Reboot()
     HAL_NVIC_SystemReset();
 }
 
-
 void DummyRobot::MoveJoints(DOF6Kinematic::Joint6D_t _joints)
 {
     for (int j = 1; j <= 6; j++)
@@ -265,6 +264,25 @@ void DummyRobot::SetEnable(bool _enable)
     isEnabled = _enable;
 }
 
+void DummyRobot::SetRGBEnable(bool _enable)
+{
+    isRGBEnabled = _enable;
+}
+
+bool DummyRobot::GetRGBEnabled()
+{
+    return isRGBEnabled;
+}
+
+void DummyRobot::SetRGBMode(uint32_t mode)
+{
+    rgbMode = mode;
+}
+
+uint32_t DummyRobot::GetRGBMode()
+{
+    return rgbMode;
+}
 
 void DummyRobot::UpdateJointPose6D()
 {

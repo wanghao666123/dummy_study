@@ -35,6 +35,7 @@ extern char serialNumberStr[13];
 #include "encoder.hpp"
 #include "analog.hpp"
 #include "pwm.hpp"
+#include "rgb.hpp"
 #include "timer.hpp"
 #include "actuators/mintasca/sca.hpp"
 #include "actuators/ctrl_step/ctrl_step.hpp"
