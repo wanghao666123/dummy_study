@@ -1,10 +1,6 @@
 # Dummy
 稚晖君dummy复制，目标是全国产谐波减速器，价格在3000元之内！
-1. 控制板，42/35闭环驱动板已有成品，可以到我的b站工房购买了！
-- [控制板购买链接](https://gf.bilibili.com/item/detail/1104338058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
-- [42闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104336058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
-- [35闭环驱动板购买链接](https://gf.bilibili.com/item/detail/1104337058?noTitleBar=1&from=mall-up_itemDetail&msource=comments_1760564963)
-
+![输入图片说明](images/dummy_cnc.png)
 1. 目录描述
 - Firmware 包括ref控制板，42，35驱动板所用源代码
 - Hardware 重新设计包括ref控制板，42，35驱动板schematic, pcb所有文件
@@ -12,8 +8,7 @@
 - ESP32-iot esp32 supports files
 
 1. 重新设计的ref控制板
-![](images/controller_top.jpg)
-![](images/controller_bot.jpg)
+![输入图片说明](images/ref.png)
 - 简化设计，更适合量产
 1. 修改所有1.0mm的连接器为插针1.5mm，fix原版连接器容易脱落
 1. 删除base板，将base板子集成到了主板上
@@ -23,8 +18,8 @@
 1. 降低量产成本
 
 1. 重新设计的42/35驱动板
-![](images/m42.jpg)
-![](images/m35.jpg)
+![输入图片说明](images/42-driver.png)
+![输入图片说明](images/35-driver.png)
 - 42/35驱动板正式版
 1. 所有连接器改为1.5mm 3A 座子，更适合量产
 1. 电源线复用两根1007/26号线，最大支持到3A
