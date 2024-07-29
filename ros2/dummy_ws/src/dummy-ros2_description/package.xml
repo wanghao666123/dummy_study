@@ -4,7 +4,7 @@
 <name>dummy-ros2_description</name>
   <version>0.0.0</version>
 <description>The dummy-ros2_description package</description>
-  <maintainer email="todo@todo.com">author</maintainer>
+  <maintainer email="xin.li@switchpi.com">Muzixiaowen</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>xacro</depend>
