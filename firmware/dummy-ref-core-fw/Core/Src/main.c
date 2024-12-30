@@ -104,7 +104,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-    HAL_RCC_DeInit();
+  HAL_RCC_DeInit();
 
   /* USER CODE END Init */
 

@@ -93,6 +93,15 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
     // Init usb irq binary semaphore, and start with no tokens by removing the starting one.
+    //!在使用 CMSIS-RTOS API 创建信号量之前，必须先定义一个控制块
+    //!创建二进制信号量 
+    //!   sem_usb_irq  0
+    //!   sem_uart4_dma  1
+    //!   sem_uart5_dma  1
+    //!   sem_usb_rx  0
+    //!   sem_usb_tx  1
+    //!   sem_can1_tx  1
+    //!   sem_can2_tx  1
     osSemaphoreDef(sem_usb_irq);
     sem_usb_irq = osSemaphoreNew(1, 0, osSemaphore(sem_usb_irq));
 
@@ -156,13 +165,14 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN StartDefaultTask */
+    /* init code for USB_DEVICE */
+    //!USB设备初始化
+    MX_USB_DEVICE_Init();
+    /* USER CODE BEGIN StartDefaultTask */
 
     // Invoke cpp-version main().
     Main();
-
+    //!删除default句柄
     vTaskDelete(defaultTaskHandle);
   /* USER CODE END StartDefaultTask */
 }

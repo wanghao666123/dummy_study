@@ -42,7 +42,9 @@ void UsbDeferredInterruptTask(void* ctx)
     for (;;)
     {
         // Wait for signalling from USB interrupt (OTG_FS_IRQHandler)
+        //!尝试获取一个信号量，并将信号量的获取状态保存在 semaphore_status 变量中，创建时设置为0
         osStatus semaphore_status = osSemaphoreAcquire(sem_usb_irq, osWaitForever);
+        //!下面这段代码应该不会执行，因为sem_usb_irq信号量的初始值为0
         if (semaphore_status == osOK)
         {
             // We have a new incoming USB transmission: handle it
