@@ -1025,11 +1025,13 @@ ProtocolProperty<TProperty> make_protocol_property(const char *name, TProperty *
 };
 
 // Const non-enum types
+//!TProperty 可以是任意非枚举类型（通过 ENABLE_IF 限制）
+//!void (*written_hook)(void *) = nullptr 回调函数设置, void *ctx = nullptr 为回调函数的参数
 template<typename TProperty, ENABLE_IF(!std::is_enum<TProperty>::value) >
 ProtocolProperty<const TProperty> make_protocol_ro_property(const char *name, TProperty *property,
                                                             void (*written_hook)(void *) = nullptr, void *ctx = nullptr)
 {
-    return ProtocolProperty<const TProperty>(name, property, written_hook, ctx);
+    return ProtocolProperty<const TProperty>(name, property, written_hook, ctx);//!这里返回加上了const，表示只读，不可写
 };
 
 // Non-const enum types
@@ -1232,6 +1234,11 @@ make_protocol_function(const char *name, TObj &obj, void(TObj::*func_ptr)(TArgs.
     return ProtocolFunction<TObj, std::tuple<TArgs...>, std::tuple<>>(name, obj, func_ptr, {names...}, {});
 }
 
+//!TArgs...：代表成员函数的参数类型包（可能是多个参数）
+//!TNames...：代表参数名称的类型包
+//!启用条件：
+//!   sizeof...(TArgs) == sizeof...(TNames)：要求参数数量和参数名称数量相等。
+//!   !std::is_void<TRet>::value：要求返回值类型不是 void
 template<typename TObj, typename TRet, typename ... TArgs, typename ... TNames,
         typename = std::enable_if_t<sizeof...(TArgs) == sizeof...(TNames) && !std::is_void<TRet>::value>>
 ProtocolFunction<TObj, std::tuple<TArgs...>, std::tuple<TRet>>
