@@ -807,7 +807,8 @@ public:
     TMember this_member_;
     MemberList<TMembers...> subsequent_members_;
 };
-
+//!TMembers... 是一个可变模板参数包（parameter pack），表示该模板可以接受多个不同类型的参数，并将它们存储在 MemberList 中。
+//!例如，它可以接受多个 ProtocolProperty、ProtocolFunction、ProtocolObject 作为成员，并将它们打包到 MemberList 中
 template<typename ... TMembers>
 MemberList<TMembers...> make_protocol_member_list(TMembers &&... member_list)
 {
@@ -851,7 +852,7 @@ public:
     const char *name_;
     MemberList<TMembers...> member_list_;
 };
-
+//!TMembers && 是一个通用引用，可以接受左值或右值
 template<typename ... TMembers>
 ProtocolObject<TMembers...> make_protocol_object(const char *name, TMembers &&... member_list)
 {

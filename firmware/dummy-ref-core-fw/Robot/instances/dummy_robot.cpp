@@ -71,7 +71,7 @@ bool DummyRobot::MoveJ(float _j1, float _j2, float _j3, float _j4, float _j5, fl
 {
     DOF6Kinematic::Joint6D_t targetJointsTmp(_j1, _j2, _j3, _j4, _j5, _j6);
     bool valid = true;
-
+    //!{0, -73, 180, 0, 0, 0}
     for (int j = 1; j <= 6; j++)
     {
         if (targetJointsTmp.a[j - 1] > motorJ[j]->angleLimitMax ||
@@ -83,10 +83,15 @@ bool DummyRobot::MoveJ(float _j1, float _j2, float _j3, float _j4, float _j5, fl
     {
         DOF6Kinematic::Joint6D_t deltaJoints = targetJointsTmp - currentJoints;
         uint8_t index;
+        //!计算6个关节中的电机最大角度，不是关节角度
         float maxAngle = AbsMaxOf6(deltaJoints, index);
+        //!计算关节的运动时间
+        //!最大电机角度 * 减速比 = 关节的运动角度
+        //!关节的运动时间 = 最大电机角度 * 减速比 / 关节速度
         float time = maxAngle * (float) (motorJ[index + 1]->reduction) / jointSpeed;
         for (int j = 1; j <= 6; j++)
         {
+            //!计算6个关节的速度，根据6个关节中的最大角度的那个关节运动时间计算
             dynamicJointSpeeds.a[j - 1] =
                 abs(deltaJoints.a[j - 1] * (float) (motorJ[j]->reduction) / time * 0.1f); //0~10r/s
         }
@@ -200,10 +205,12 @@ void DummyRobot::CalibrateHomeOffset()
 {
     // Disable FixUpdate, but not disable motors
     isEnabled = false;
+    //!发送can标准帧数据
     motorJ[ALL]->SetEnable(true);
 
     // 1.Manually move joints to L-Pose [precisely]
     // ...
+    //!设置关节 2 和关节 3 的电流限制为 0.5。这是为了限制电流，以防止过载。
     motorJ[2]->SetCurrentLimit(0.5);
     motorJ[3]->SetCurrentLimit(0.5);
     osDelay(500);
@@ -245,9 +252,10 @@ void DummyRobot::Homing()
 
 void DummyRobot::Resting()
 {
-    float lastSpeed = jointSpeed;
-    SetJointSpeed(10);
-
+    float lastSpeed = jointSpeed;//! 30degree/s
+    SetJointSpeed(10);//!10degree/s
+    //!{0, -73, 180, 0, 0, 0}
+    //!计算targetJoints，并且已知各个关节到目标位置的运动时间
     MoveJ(REST_POSE.a[0], REST_POSE.a[1], REST_POSE.a[2],
           REST_POSE.a[3], REST_POSE.a[4], REST_POSE.a[5]);
     MoveJoints(targetJoints);
