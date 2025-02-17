@@ -59,6 +59,8 @@ void DummyRobot::Reboot()
 
 void DummyRobot::MoveJoints(DOF6Kinematic::Joint6D_t _joints)
 {
+    //!targetJoints = {0, -73, 180, 0, 0, 0}
+    //!initPose = {0, 0, 90, 0, 0, 0}
     for (int j = 1; j <= 6; j++)
     {
         motorJ[j]->SetAngleWithVelocityLimit(_joints.a[j - 1] - initPose.a[j - 1],
@@ -172,6 +174,7 @@ void DummyRobot::UpdateJointAnglesCallback()
 {
     for (int i = 1; i <= 6; i++)
     {
+        //!motorJ[i]->angle:当前关节角度（猜测这里传过来的应该是相对于initPose的角度）
         currentJoints.a[i - 1] = motorJ[i]->angle + initPose.a[i - 1];
 
         if (motorJ[i]->state == CtrlStepMotor::FINISH)
@@ -200,7 +203,8 @@ void DummyRobot::SetJointAcceleration(float _acc)
         motorJ[i]->SetAcceleration(_acc / 100 * DEFAULT_JOINT_ACCELERATION_BASES.a[i - 1]);
 }
 
-
+//!{0, -73, 180, 0, 0, 0}
+//!这里面的值应该是测出来的，也就是试出来的，确保所有关节都在一个已知的家庭位置
 void DummyRobot::CalibrateHomeOffset()
 {
     // Disable FixUpdate, but not disable motors
@@ -222,16 +226,20 @@ void DummyRobot::CalibrateHomeOffset()
     // 3.Go to Resting-Pose
     initPose = DOF6Kinematic::Joint6D_t(0, 0, 90, 0, 0, 0);
     currentJoints = DOF6Kinematic::Joint6D_t(0, 0, 90, 0, 0, 0);
+    //!所有关节到转动到目标位置
     Resting();
     osDelay(500);
 
     // 4.Apply Home-Offset the second time
+    //!这里可能是为了确保can数据发送完成？
     motorJ[ALL]->ApplyPositionAsHome();
     osDelay(500);
+
+    //!设置关节 2 和关节 3 的电流限制为 1。这是为了限制电流，以防止过载。
     motorJ[2]->SetCurrentLimit(1);
     motorJ[3]->SetCurrentLimit(1);
     osDelay(500);
-
+    //!重启
     Reboot();
 }
 
@@ -258,10 +266,11 @@ void DummyRobot::Resting()
     //!计算targetJoints，并且已知各个关节到目标位置的运动时间
     MoveJ(REST_POSE.a[0], REST_POSE.a[1], REST_POSE.a[2],
           REST_POSE.a[3], REST_POSE.a[4], REST_POSE.a[5]);
+    //!发送每个电机的需要转多少数和速度限制
     MoveJoints(targetJoints);
     while (IsMoving())
         osDelay(10);
-
+    //!所有关节到转动到目标位置
     SetJointSpeed(lastSpeed);
 }
 

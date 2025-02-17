@@ -26,10 +26,11 @@ void OnCanMessage(CAN_context* canCtx, CAN_RxHeaderTypeDef* rxHeader, uint8_t* d
         switch (cmd)
         {
             case 0x23:
+                //!data的第一个元素应该是角度，第五个元素应该是是否完成
                 dummy.motorJ[id]->UpdateAngleCallback(*(float*) (data), data[4]);
                 break;
             case 0x25:
-                 memcpy(&dummy.motorJ[id]->temperature, data, sizeof(uint32_t));//(uint32_t) (data);
+                memcpy(&dummy.motorJ[id]->temperature, data, sizeof(uint32_t));//(uint32_t) (data);
                 break;
             default:
                 break;

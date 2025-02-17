@@ -259,7 +259,9 @@ void CtrlStepMotor::SetAngle(float _angle)
 void CtrlStepMotor::SetAngleWithVelocityLimit(float _angle, float _vel)
 {
     _angle = inverseDirection ? -_angle : _angle;
+    //!关节的目标转动角度对应的步近电机的步进计数，相当于关节映射到电机需要转多少数
     float stepMotorCnt = _angle / 360.0f * (float) reduction;
+    //!通过can发送电机需要转多少数和速度限制
     SetPositionWithVelocityLimit(stepMotorCnt, _vel);
 }
 
@@ -276,7 +278,7 @@ void CtrlStepMotor::UpdateAngle()
 void CtrlStepMotor::UpdateAngleCallback(float _pos, bool _isFinished)
 {
     state = _isFinished ? FINISH : RUNNING;
-
+    //!这里解算成关节的角度
     float tmp = _pos / (float) reduction * 360;
     angle = inverseDirection ? -tmp : tmp;
 }
