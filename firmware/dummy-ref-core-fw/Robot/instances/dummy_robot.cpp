@@ -246,14 +246,16 @@ void DummyRobot::CalibrateHomeOffset()
 
 void DummyRobot::Homing()
 {
-    float lastSpeed = jointSpeed;
-    SetJointSpeed(10);
-
+    float lastSpeed = jointSpeed;//! 30degree/s
+    SetJointSpeed(10);//! 10degree/s
+    //!计算各个关节运动到(0, 0, 90, 0, 0, 0)的所需要的速度
     MoveJ(0, 0, 90, 0, 0, 0);
+    //!targetJoints = (0, 0, 90, 0, 0, 0)
+    //!发送每个电机的需要转多少数和速度限制
     MoveJoints(targetJoints);
     while (IsMoving())
         osDelay(10);
-
+    //!所有关节到转动到目标位置
     SetJointSpeed(lastSpeed);
 }
 

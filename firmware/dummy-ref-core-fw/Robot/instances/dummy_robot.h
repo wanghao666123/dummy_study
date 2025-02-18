@@ -150,7 +150,7 @@ public:
     {
         return make_protocol_member_list(
             make_protocol_function("calibrate_home_offset", *this, &DummyRobot::CalibrateHomeOffset),
-            make_protocol_function("homing", *this, &DummyRobot::Homing),
+            make_protocol_function("homing", *this, &DummyRobot::Homing),//!这里感觉有点问题
             make_protocol_function("resting", *this, &DummyRobot::Resting),
             make_protocol_object("joint_1", motorJ[1]->MakeProtocolDefinitions()),
             make_protocol_object("joint_2", motorJ[2]->MakeProtocolDefinitions()),
@@ -165,11 +165,11 @@ public:
             make_protocol_function("set_rgb_enable", *this, &DummyRobot::SetRGBEnable, "enable"),
             make_protocol_function("set_rgb_mode", *this, &DummyRobot::SetRGBMode, "mode"),
             make_protocol_function("move_j", *this, &DummyRobot::MoveJ, "j1", "j2", "j3", "j4", "j5", "j6"),
-            make_protocol_function("move_l", *this, &DummyRobot::MoveL, "x", "y", "z", "a", "b", "c"),
+            make_protocol_function("move_l", *this, &DummyRobot::MoveL, "x", "y", "z", "a", "b", "c"),//!这个
             make_protocol_function("set_joint_speed", *this, &DummyRobot::SetJointSpeed, "speed"),
             make_protocol_function("set_joint_acc", *this, &DummyRobot::SetJointAcceleration, "acc"),
-            make_protocol_function("set_command_mode", *this, &DummyRobot::SetCommandMode, "mode"),
-            make_protocol_object("tuning", tuningHelper.MakeProtocolDefinitions())
+            make_protocol_function("set_command_mode", *this, &DummyRobot::SetCommandMode, "mode"),//!这个
+            make_protocol_object("tuning", tuningHelper.MakeProtocolDefinitions())//!这个
         );
     }
 

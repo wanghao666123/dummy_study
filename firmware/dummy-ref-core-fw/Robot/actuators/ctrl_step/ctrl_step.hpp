@@ -62,7 +62,7 @@ public:
     auto MakeProtocolDefinitions()
     {
         return make_protocol_member_list(
-            make_protocol_ro_property("angle", &angle),
+            make_protocol_ro_property("angle", &angle),//!当前关节角度
             make_protocol_function("reboot", *this, &CtrlStepMotor::Reboot),
             make_protocol_function("get_temperature", *this, &CtrlStepMotor::GetTemp),
             make_protocol_function("set_enable_temperature", *this, &CtrlStepMotor::SetEnableTemp, "enable"),
